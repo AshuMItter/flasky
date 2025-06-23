@@ -10,7 +10,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 
 app = Flask(__name__)
 #app.config["secret_key"] = 'uwequwyequwe-1625361253-ajsgdvhasgd-125631'
-application = app
+
 app.secret_key = os.urandom(24)  # Generates a 24-byte random key
 bootstrap = Bootstrap(app)
 Moment = moment(app)
@@ -197,11 +197,10 @@ def logout():
     return redirect(url_for('login'))
     
         
-   
-   
+      
 
 if __name__ == '__main__':
- application.run(debug=True)
+ app.run(debug=True)
 
 
 

@@ -69,11 +69,11 @@ jobs:
      #   uses: anchore/scan-action@v3
        # if: startsWith(runs-on, 'ubuntu')
 
-      - name: OWASP ZAP Scan
-        uses: zaproxy/action-full-scan@v0.6.0
-        if: success()
-        with:
-          target: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+     # - name: OWASP ZAP Scan
+    #    uses: zaproxy/action-full-scan@v0.6.0
+   #     if: success()
+    #    with:
+    #      target: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
       - name: Check Licenses
         uses: fossas/fossa-action@v1

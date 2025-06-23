@@ -44,6 +44,40 @@ jobs:
           path: |
             release.zip
             !venv/
+            
+      - name: Run SAST Scan
+        uses: github/codeql-action/analyze@v2
+        with:
+          languages: 'python'
+
+      - name: Dependency Vulnerability Scan
+        uses: actions/dependency-review-action@v3
+      - name: Check for outdated dependencies
+        run: pip list --outdated
+
+      - name: Secrets Scanning
+        uses: gitleaks/gitleaks-action@v2
+
+      - name: Checkov IaC Scan
+        uses: bridgecrewio/checkov-action@v12
+
+      - name: Scan Container Image
+        uses: anchore/scan-action@v3
+        if: startsWith(runs-on, 'ubuntu')
+
+      - name: OWASP ZAP Scan
+        uses: zaproxy/action-full-scan@v0.6.0
+        if: success()
+        with:
+          target: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+      - name: Check Licenses
+        uses: fossas/fossa-action@v2
+
+      - name: Harden Python Environment
+        run: |
+          pip-audit
+          bandit -r .
 
   deploy:
     runs-on: ubuntu-latest

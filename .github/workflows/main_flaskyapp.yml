@@ -45,10 +45,18 @@ jobs:
             release.zip
             !venv/
             
-      - name: Run SAST Scan
-        uses: github/codeql-action/analyze@v1
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
         with:
-          languages: 'python'
+            languages: 'python'
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+            output: ../results
+            upload: always
+
+          
 
       - name: Dependency Vulnerability Scan
         uses: actions/dependency-review-action@v3

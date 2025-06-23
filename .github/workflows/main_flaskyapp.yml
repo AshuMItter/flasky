@@ -78,7 +78,6 @@ jobs:
     #  - name: Check Licenses
     #    uses: fossas/fossa-action@v1
 
-      - name: Harden Python Environment
       - name: Upgrade pip-audit
         run: pip install --upgrade pip-audit
 

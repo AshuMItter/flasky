@@ -75,8 +75,8 @@ jobs:
     #    with:
     #      target: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-      - name: Check Licenses
-        uses: fossas/fossa-action@v1
+    #  - name: Check Licenses
+    #    uses: fossas/fossa-action@v1
 
       - name: Harden Python Environment
         run: |

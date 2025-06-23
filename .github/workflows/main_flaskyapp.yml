@@ -80,8 +80,9 @@ jobs:
 
       - name: Harden Python Environment
         run: |
-          pip-audit
-          bandit -r .
+            pip install pip-audit bandit
+            pip-audit
+            bandit -r .
   analyze:
     name: Analyze
     runs-on: ubuntu-latest

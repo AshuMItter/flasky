@@ -48,13 +48,16 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
-            languages: 'python'
+           languages: 'python'
+
+# Add this if you need Python dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+         python-version: '3.11'  # specify your version
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
-        with:
-            output: ../results
-            upload: always
 
           
 

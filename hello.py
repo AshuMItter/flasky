@@ -10,6 +10,8 @@ from werkzeug.security import generate_password_hash,check_password_hash
 
 app = Flask(__name__)
 #app.config["secret_key"] = 'uwequwyequwe-1625361253-ajsgdvhasgd-125631'
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_FILE_DIR'] = '/home/site/wwwroot/sessions'
 
 app.secret_key = os.urandom(24)  # Generates a 24-byte random key
 bootstrap = Bootstrap(app)

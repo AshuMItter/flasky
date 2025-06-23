@@ -80,9 +80,10 @@ jobs:
 
       - name: Harden Python Environment
         run: |
-            pip install pip-audit bandit
-            pip-audit
-            bandit -r .
+             python -m pip install --upgrade pip
+             pip install pip-audit bandit
+             pip-audit --format sarif -o pip-audit-results.sarif
+             bandit -r . -f sarif -o bandit-results.sarif
   analyze:
     name: Analyze
     runs-on: ubuntu-latest

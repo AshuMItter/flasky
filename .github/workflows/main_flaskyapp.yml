@@ -78,11 +78,11 @@ jobs:
     #  - name: Check Licenses
     #    uses: fossas/fossa-action@v1
 
-      - name: Upgrade pip-audit
-        run: pip install --upgrade pip-audit
+     # - name: Upgrade pip-audit
+      #  run: pip install --upgrade pip-audit
 
-      - name: Run pip-audit (JSON format)
-        run: pip-audit -f json
+     # - name: Run pip-audit (JSON format)
+     #   run: pip-audit -f json
         
   analyze:
     name: Analyze

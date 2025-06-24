@@ -9,6 +9,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+  
+permissions:
+  security-events: write
+  actions: read
+  contents: read
 
 jobs:
   build:
@@ -44,6 +49,74 @@ jobs:
           path: |
             release.zip
             !venv/
+            
+             
+
+      - name: OWASP Dependency-Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+            project: 'flasky'
+            scan_dir: '.'  # Directory to scan
+            format: 'HTML' # Report format (JSON, HTML, SARIF)
+
+      - name: Secrets Scanning
+        uses: gitleaks/gitleaks-action@v2
+
+      - name: Checkov IaC Scan
+        uses: bridgecrewio/checkov-action@v12
+
+     # - name: Scan Container Image
+     #   uses: anchore/scan-action@v3
+       # if: startsWith(runs-on, 'ubuntu')
+
+     # - name: OWASP ZAP Scan
+    #    uses: zaproxy/action-full-scan@v0.6.0
+   #     if: success()
+    #    with:
+    #      target: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    #  - name: Check Licenses
+    #    uses: fossas/fossa-action@v1
+
+     # - name: Upgrade pip-audit
+      #  run: pip install --upgrade pip-audit
+
+     # - name: Run pip-audit (JSON format)
+     #   run: pip-audit -f json
+        
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    # Install Python dependencies if needed
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'python'
+        # If you have custom queries, add them here
+        # queries: +security-and-quality
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
 
   deploy:
     runs-on: ubuntu-latest

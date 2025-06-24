@@ -18,12 +18,15 @@ bootstrap = Bootstrap(app)
 Moment = moment(app)
 
 
-
-
 class NameForm(FlaskForm):
     name = StringField("What is your name?", validators=[InputRequired()])
     submit = SubmitField('Submit')
 
+
+class LoginForm(FlaskForm):
+    username = StringField('username', validators=[InputRequired()])
+    password = PasswordField('password', validators=[InputRequired()])
+    submit = SubmitField('Login')
 
 
 
@@ -88,10 +91,20 @@ def init_db():
    
 init_db()
 
-class LoginForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired()])
-    password = PasswordField('password', validators=[InputRequired()])
-    submit = SubmitField('Login')
+# class LoginForm(FlaskForm):
+#     username = StringField('username', validators=[InputRequired()])
+#     password = PasswordField('password', validators=[InputRequired()])
+#     submit = SubmitField('Login')
+
+@app.route('/practice')
+def Practice():
+   form = LoginForm()
+   print(form.username.data)
+   return render_template('login.html',form=form)
+
+
+
+
 
 @app.route('/login',methods=["GET","POST"])
 def login():
@@ -100,13 +113,11 @@ def login():
    if form.validate_on_submit():
       conn = sqlite3.connect('database.db')
       cursor= conn.cursor()      
-      cursor.execute('Select * FROM users WHERE username=?',(form.username.data.strip(),))
-      
+      cursor.execute('Select * FROM users WHERE username=?',(form.username.data.strip(),))      
       
       user = cursor.fetchone()       
       print(user[2])       
       conn.close()
-
       if user and check_password_hash(user[2],form.password.data.strip()):
          session['user_id'] = user[0]
          session['username'] = user[1]

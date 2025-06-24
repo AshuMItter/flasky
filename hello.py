@@ -145,7 +145,7 @@ def home():
 
 @app.route('/')
 def index():
-  response = make_response('<h1>This document carries a cookie!</h1>')
+  response = make_response('<h1><center>This document carries a cookie!</center></h1>')
   response.set_cookie('answer', '42')
   response.status_code = 400
   return response
